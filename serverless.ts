@@ -10,12 +10,9 @@ const serverlessConfiguration: AWS = {
     name: "aws",
     runtime: "nodejs14.x",
     stage: "${opt:stage, 'dev'}",
-/*     apiGateway: {
-      restApiId: "${ssm:/digital/api-gateway-rest-api-id-${self:provider.stage}}",
-      restApiRootResourceId: "${ssm:/digital/api-gateway-rest-api-root-resource-id-${self:provider.stage}}",
-      minimumCompressionSize: 1024,
-      shouldStartNameWithService: true,
-    }, */
+    eventBridge:{
+      useCloudFormation: true,
+    },
     deploymentBucket: {//PROPIEDAD PARA DECIRLE QUE BUCKET USAR
       name: "${ssm:/digital/s3-bucket-deployment-name-${self:provider.stage}}",
       serverSideEncryption: "AES256",
@@ -37,11 +34,6 @@ const serverlessConfiguration: AWS = {
             ],
             Resource: "arn:aws:logs:*:*:*",
           },
-/*           {
-            Effect: "Allow",
-            Action: "lambda:InvokeFunction",
-            Resource: "arn:aws:lambda:us-east-1:867855303039:*"
-          } */
         ],
 
       }
@@ -58,10 +50,6 @@ const serverlessConfiguration: AWS = {
       platform: "node",
       concurrency: 10,
     },
-/*     apiGateway: {
-      restApiId: "2191e9kay8",
-      restApiRootResourceId: "6pmiw878ck",
-    } */
   },
   functions: { appointment },
 
