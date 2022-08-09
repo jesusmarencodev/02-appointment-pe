@@ -11,7 +11,7 @@ export default {
           source:["appointment"],
           "detail-type": ["appointment-create-pe"]
         },
-        deadLetterQueueArn: "${ssm:/digital/sqs-dlq-deployment-name-${self:provider.stage}}",
+        deadLetterQueueArn: "${ssm:/digital/sql-dlq-deployment-name-${self:provider.stage}}",
       }
     }
   ]

@@ -73,6 +73,13 @@
                     "logs:PutLogEvents"
                   ],
                   "Resource": "arn:aws:logs:*:*:*"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:*"
+                  ],
+                  "Resource": "arn:aws:dynamodb:us-east-1:*:table/Appointment-dev"
                 }
               ]
             }
@@ -87,7 +94,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "digital-test-ttaa-jdmp-adev",
-          "S3Key": "serverless/appointment-pe/dev/1659285805578-2022-07-31T16:43:25.578Z/appointment.zip"
+          "S3Key": "serverless/appointment-pe/dev/1660074154121-2022-08-09T19:42:34.121Z/appointment.zip"
         },
         "Handler": "src/functions/appointment/handler.appointmentHandler",
         "Runtime": "nodejs14.x",
@@ -111,14 +118,14 @@
         "AppointmentLogGroup"
       ]
     },
-    "AppointmentLambdaVersionSBURK21MjwPJCIJ7MapcSwMw9t1MPS8R9bUKX1OZ0": {
+    "AppointmentLambdaVersionR9AxTa8AKCY58ljFG0X17ysiENVc0ZYzWcssLkPhU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AppointmentLambdaFunction"
         },
-        "CodeSha256": "pXJwqrvGQCICzts8QGMXASYbfkCbsN345NNXHYZk/DQ="
+        "CodeSha256": "qE959MEJ9scHTIgwPsKcmlUxBUSyY/DiEYHY2EgRAwk="
       }
     },
     "Appointmentpedevappointmentrule1EventBridgeRule": {
@@ -143,7 +150,10 @@
                 "Arn"
               ]
             },
-            "Id": "appointment-pe-dev-appointment-rule-1-target"
+            "Id": "appointment-pe-dev-appointment-rule-1-target",
+            "DeadLetterConfig": {
+              "Arn": "arn:aws:sqs:us-east-1:867855303039:SQSDLQ-dev"
+            }
           }
         ]
       }
@@ -197,7 +207,7 @@
     "AppointmentLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AppointmentLambdaVersionSBURK21MjwPJCIJ7MapcSwMw9t1MPS8R9bUKX1OZ0"
+        "Ref": "AppointmentLambdaVersionR9AxTa8AKCY58ljFG0X17ysiENVc0ZYzWcssLkPhU"
       },
       "Export": {
         "Name": "sls-appointment-pe-dev-AppointmentLambdaFunctionQualifiedArn"

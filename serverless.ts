@@ -34,6 +34,11 @@ const serverlessConfiguration: AWS = {
             ],
             Resource: "arn:aws:logs:*:*:*",
           },
+          {//permisos para eescribir en un recurso de dynamodb
+            Effect: "Allow",
+            Action: "dynamodb:*",
+            Resource: "arn:aws:dynamodb:us-east-1:*:table/Appointment-${self:provider.stage}" 
+          }
         ],
 
       }
