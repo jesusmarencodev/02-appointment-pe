@@ -80,6 +80,17 @@
                     "dynamodb:*"
                   ],
                   "Resource": "arn:aws:dynamodb:us-east-1:*:table/Appointment-dev"
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "sqs:ReceiveMessage",
+                    "sqs:DeleteMessage",
+                    "sqs:GetQueueAttributes"
+                  ],
+                  "Resource": [
+                    "arn:aws:sqs:us-east-1:867855303039:SQS_PE_dev"
+                  ]
                 }
               ]
             }
@@ -94,7 +105,7 @@
       "Properties": {
         "Code": {
           "S3Bucket": "digital-test-ttaa-jdmp-adev",
-          "S3Key": "serverless/appointment-pe/dev/1660074154121-2022-08-09T19:42:34.121Z/appointment.zip"
+          "S3Key": "serverless/appointment-pe/dev/1660250748878-2022-08-11T20:45:48.878Z/appointment.zip"
         },
         "Handler": "src/functions/appointment/handler.appointmentHandler",
         "Runtime": "nodejs14.x",
@@ -128,72 +139,21 @@
         "CodeSha256": "qE959MEJ9scHTIgwPsKcmlUxBUSyY/DiEYHY2EgRAwk="
       }
     },
-    "Appointmentpedevappointmentrule1EventBridgeRule": {
-      "Type": "AWS::Events::Rule",
+    "AppointmentEventSourceMappingSQSSQSPEdev": {
+      "Type": "AWS::Lambda::EventSourceMapping",
+      "DependsOn": [
+        "IamRoleLambdaExecution"
+      ],
       "Properties": {
-        "EventBusName": "EventBusPracticaAWSServerless01",
-        "EventPattern": {
-          "source": [
-            "appointment"
-          ],
-          "detail-type": [
-            "appointment-create-pe"
-          ]
-        },
-        "Name": "appointment-pe-dev-appointment-rule-1",
-        "State": "ENABLED",
-        "Targets": [
-          {
-            "Arn": {
-              "Fn::GetAtt": [
-                "AppointmentLambdaFunction",
-                "Arn"
-              ]
-            },
-            "Id": "appointment-pe-dev-appointment-rule-1-target",
-            "DeadLetterConfig": {
-              "Arn": "arn:aws:sqs:us-east-1:867855303039:SQSDLQ-dev"
-            }
-          }
-        ]
-      }
-    },
-    "AppointmentEventBridgeLambdaPermission1": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "Action": "lambda:InvokeFunction",
+        "BatchSize": 10,
+        "EventSourceArn": "arn:aws:sqs:us-east-1:867855303039:SQS_PE_dev",
         "FunctionName": {
-          "Ref": "AppointmentLambdaFunction"
-        },
-        "Principal": "events.amazonaws.com",
-        "SourceArn": {
-          "Fn::Join": [
-            ":",
-            [
-              "arn",
-              {
-                "Ref": "AWS::Partition"
-              },
-              "events",
-              {
-                "Ref": "AWS::Region"
-              },
-              {
-                "Ref": "AWS::AccountId"
-              },
-              {
-                "Fn::Join": [
-                  "/",
-                  [
-                    "rule",
-                    "EventBusPracticaAWSServerless01",
-                    "appointment-pe-dev-appointment-rule-1"
-                  ]
-                ]
-              }
-            ]
+          "Fn::GetAtt": [
+            "AppointmentLambdaFunction",
+            "Arn"
           ]
-        }
+        },
+        "Enabled": true
       }
     }
   },
