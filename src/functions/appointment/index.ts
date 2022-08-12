@@ -5,7 +5,7 @@ export default {
   events: [
     {
       sqs: {
-        arn: "${ssm:/digital/sqs-pe-arn-${self:provider.stage}}"
+        arn: "${ssm:/digital/sqs-pe-arn-${self:provider.stage}}",
       }
       /*       eventBridge : {
               //colocamos el arn del eventBridge que ya tenemsos creado su nombre es EventBusPracticaAWSServerless01
